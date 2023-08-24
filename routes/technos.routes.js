@@ -1,11 +1,23 @@
 const router = require("express").Router();
-const Techno = require("../models/techno.model");
+const Techno = require("../models/techno.models");
+const { isAuthenticated, isAdmin } = require("./../middlewares/jwt.middleware");
 
 // GET all technos
 router.get("/", async (req, res, next) => {
     try {
         const ALLTECHNOS = await Techno.find();
         res.json(ALLTECHNOS);
+    } catch (error) {
+        next(error);
+    }
+});
+
+// CREATE one techno
+//http://localhost:5005/api/technos/
+router.post("/", async (req, res, next) => {
+    try {
+        const newTechno = await Techno.create(req.body);
+        res.status(201).json(newTechno);
     } catch (error) {
         next(error);
     }

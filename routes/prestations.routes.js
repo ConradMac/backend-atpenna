@@ -1,8 +1,9 @@
 const router = require("express").Router();
-const Prestation = require("../models/prestation.model");
+const Prestation = require("../models/Prestation.models");
 
 // GET all prestations
-router.get("/", async (req, res, next) => {
+//localhost:5005/api/prestations/
+http: router.get("/", async (req, res, next) => {
     try {
         const allPrestations = await Prestation.find();
         res.json(allPrestations);
@@ -11,10 +12,11 @@ router.get("/", async (req, res, next) => {
     }
 });
 
-// GET one prestation
 router.get("/:prestationId", async (req, res, next) => {
+    const prestationId = req.params.prestationId;
+
     try {
-        const prestation = await Prestation.findById(req.params.prestationId);
+        const prestation = await Prestation.findById(prestationId);
         res.json(prestation);
     } catch (error) {
         next(error);
@@ -32,7 +34,8 @@ router.post("/", async (req, res, next) => {
 });
 
 // UPDATE a prestation
-router.put("/:prestationId", async (req, res, next) => {
+//localhost:5005/api/prestations/64e62446078d1d08037b04cd ( we have to add the ID after )
+http: router.put("/:prestationId", async (req, res, next) => {
     try {
         const updatedPrestation = await Prestation.findByIdAndUpdate(req.params.prestationId, req.body, { new: true });
         res.json(updatedPrestation);
@@ -42,6 +45,7 @@ router.put("/:prestationId", async (req, res, next) => {
 });
 
 // DELETE a prestation
+//http://localhost:5005/api/prestations/64e62446078d1d08037b04cd
 router.delete("/:prestationId", async (req, res, next) => {
     try {
         await Prestation.findByIdAndDelete(req.params.prestationId);

@@ -60,12 +60,13 @@ const userSchema = new Schema(
             enum: ["Admin", "User"],
             default: "User",
         },
-        // prestation: [
-        //     {
-        //         type: Schema.Types.ObjectId,
-        //         ref: "Prestation",
-        //     },
-        // ],
+        // relation avec le user connected
+        prestation: [
+            {
+                type: Schema.Types.ObjectId,
+                ref: "Prestation",
+            },
+        ],
         techno: [
             {
                 type: Schema.Types.ObjectId,
