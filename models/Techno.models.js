@@ -22,10 +22,10 @@ const technoSchema = new Schema(
             required: [true, "Subject is required."],
             trim: true,
         },
-        user: {
-            type: Schema.Types.ObjectId,
-            ref: "User",
-        },
+        // user: {
+        //     type: Schema.Types.ObjectId,
+        //     ref: "User",
+        // },
     },
     {
         timestamps: true,

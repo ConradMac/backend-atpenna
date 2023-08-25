@@ -2,6 +2,28 @@ const router = require("express").Router();
 const User = require("../models/User.model");
 // const { isAuthenticated } = require("../middlewares/authentication");
 
+//afficlier techno a user team pr ke kan je clik/photo je sois rediriger sur page avec all user avec id techno & then click sur photo pour voir profil de la person que je souhaite.
+
+//http://localhost:5005/api/users/64e74dcc35e133edc3137002/techno //id tehcno + techno de la techno.
+router.get("/:technoId/techno", async (req, res, next) => {
+    try {
+        const ONETECHNO = await User.find({ techno: { $in: [req.params.technoId] } }).populate("techno");
+        res.json(ONETECHNO);
+    } catch (error) {
+        next(error);
+    }
+});
+
+// faire de meme avec prestation quand je clique sur prestation que je sois rediriger sur page avec all user avec id prestation & then click sur photo pour voir profil de la person que je souhaite.
+router.get("/:prestationId/prestations", async (req, res, next) => {
+    try {
+        const ONETECHNO = await User.find({ prestation: { $in: [req.params.prestationId] } });
+        res.json(ONETECHNO);
+    } catch (error) {
+        next(error);
+    }
+});
+
 // GET all users
 router.get("/", async (req, res, next) => {
     try {
@@ -23,14 +45,14 @@ router.get("/:userId", async (req, res, next) => {
 });
 
 // CREATE a new user
-router.post("/", async (req, res, next) => {
-    try {
-        const newUser = await User.create(req.body);
-        res.status(201).json(newUser);
-    } catch (error) {
-        next(error);
-    }
-});
+// router.post("/", async (req, res, next) => {
+//     try {
+//         const newUser = await User.create(req.body);
+//         res.status(201).json(newUser);
+//     } catch (error) {
+//         next(error);
+//     }
+// });
 
 // UPDATE a user
 router.put("/:userId", async (req, res, next) => {

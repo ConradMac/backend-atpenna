@@ -44,15 +44,16 @@ const userSchema = new Schema(
             required: [true, "Password is required."],
         },
         current_status: {
-            type: Number,
-            default: 0,
-        },
-        slug: {
             type: String,
-            unique: true,
-            lowercase: true,
-            trim: true,
+            enum: ["busy", "available"],
+            default: "busy",
         },
+        // slug: {
+        //     type: String,
+        //     unique: true,
+        //     lowercase: true,
+        //     trim: true,
+        // },
 
         // utilisé pour les login logout :)
         role: {

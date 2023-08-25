@@ -1,6 +1,7 @@
 const router = require("express").Router();
 const Techno = require("../models/techno.models");
 const { isAuthenticated, isAdmin } = require("./../middlewares/jwt.middleware");
+const User = require("./../models/User.model");
 
 // GET all technos
 router.get("/", async (req, res, next) => {
