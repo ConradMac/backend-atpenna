@@ -48,6 +48,10 @@ const userSchema = new Schema(
             enum: ["busy", "available"],
             default: "busy",
         },
+        picture: {
+            type: String,
+            default: "",
+        },
         // slug: {
         //     type: String,
         //     unique: true,

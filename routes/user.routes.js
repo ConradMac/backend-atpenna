@@ -45,14 +45,16 @@ router.get("/:userId", async (req, res, next) => {
 });
 
 // CREATE a new user
-// router.post("/", async (req, res, next) => {
-//     try {
-//         const newUser = await User.create(req.body);
-//         res.status(201).json(newUser);
-//     } catch (error) {
-//         next(error);
-//     }
-// });
+router.post("/", async (req, res, next) => {
+    try {
+        const newUser = await User.create(req.body);
+        res.status(201).json(newUser);
+    } catch (error) {
+        next(error);
+    }
+});
+
+module.exports = router;
 
 // UPDATE a user
 router.put("/:userId", async (req, res, next) => {
@@ -71,6 +73,30 @@ router.delete("/:userId", async (req, res, next) => {
         res.sendStatus(204);
     } catch (error) {
         next(error);
+    }
+});
+
+// ...
+
+// Endpoint pour récupérer les images des membres de l'équipe
+router.post("/team-images", async (req, res) => {
+    try {
+        const teamMembers = await User.find({ role: "User" }); // Vous pourriez utiliser un filtre pour récupérer uniquement les membres de l'équipe
+        const teamImages = teamMembers.map((member) => member.picture);
+        res.status(200).json(teamImages);
+    } catch (error) {
+        res.status(500).json({ message: "Internal server error" });
+    }
+});
+
+// Endpoint pour récupérer les images des membres de l'équipe (GET)
+router.get("/team-images", async (req, res) => {
+    try {
+        const teamMembers = await User.find({ role: "User" }); // Vous pourriez utiliser un filtre pour récupérer uniquement les membres de l'équipe
+        const teamImages = teamMembers.map((member) => member.picture);
+        res.status(200).json(teamImages);
+    } catch (error) {
+        res.status(500).json({ message: "Internal server error" });
     }
 });
 
