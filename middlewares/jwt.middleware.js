@@ -1,4 +1,5 @@
 const { expressjwt: jwt } = require("express-jwt");
+const User = require("../models/User.model");
 
 // Instantiate the JWT token validation middleware
 const isAuthenticated = jwt({
@@ -8,11 +9,17 @@ const isAuthenticated = jwt({
     getToken: getTokenFromHeaders,
 });
 
-function isAdmin(req, res, next) {
-    if (req.user.role === "Admin") {
-        next();
-    } else {
-        return res.status(401).json({ message: "Unauthorized." });
+async function isAdmin(req, res, next) {
+    try {
+        const user = await User.findById(req.payload._id);
+        if (user.role === "Admin") {
+            req.user = user;
+            next();
+        } else {
+            return res.status(401).json({ message: "Unauthorized." });
+        }
+    } catch (error) {
+        next(error);
     }
 }
 

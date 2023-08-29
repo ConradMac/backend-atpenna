@@ -13,13 +13,37 @@ const User = require("../models/User.model");
 // Require necessary (isAuthenticated) middleware in order to control access to specific routes
 const { isAuthenticated, isAdmin } = require("../middlewares/jwt.middleware.js");
 
+//req middleware qui permet de mettre en ligne l'image !!!!!
+const uploader = require("./../config/cloudinary.config");
+
 // How many rounds should bcrypt run the salt (default - 10 rounds)
 const saltRounds = 10;
 
 // POST /auth/signup  - Creates a new user in the database
-router.post("/signup", (req, res, next) => {
+router.post("/signup", uploader.single("picture"), async (req, res, next) => {
     const { email, password, lastName, firstName, address, zipcode, city, phone } = req.body;
     // Check if email or password or name are provided as empty strings
+
+    //     try {
+    //         const createdUser = await User.create({
+    //             // name: req.body.name,
+    //             email: req.body.email,
+    //             password: req.body.password,
+    //             picture: req.file.path,
+    //             lastName: req.body.lastName,
+    //             firstName: req.body.firstName,
+    //             address: req.body.address,
+    //             zipcode: req.body.zipcode,
+    //             city: req.body.city,
+    //             phone: req.body.phone,
+    //         });
+
+    //         res.json(createdUser);
+    //     } catch (error) {
+    //         next(error);
+    //     }
+    // });
+
     if (
         email === "" ||
         password === "" ||
@@ -75,7 +99,7 @@ router.post("/signup", (req, res, next) => {
                 zipcode,
                 city,
                 phone,
-                picture: req.body.picture,
+                picture: req.file.path,
             });
         })
         .then((createdUser) => {

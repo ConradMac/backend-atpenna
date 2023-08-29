@@ -1,9 +1,11 @@
+const { isAuthenticated, isAdmin } = require("./../middlewares/jwt.middleware");
+
 const router = require("express").Router();
 const Prestation = require("../models/Prestation.models");
 
 // GET all prestations
 //localhost:5005/api/prestations/
-http: router.get("/", async (req, res, next) => {
+router.get("/", async (req, res, next) => {
     try {
         const allPrestations = await Prestation.find();
         res.json(allPrestations);
@@ -24,20 +26,48 @@ router.get("/:prestationId", async (req, res, next) => {
 });
 
 // CREATE a new prestation
-router.post("/", async (req, res, next) => {
+router.post("/", isAuthenticated, isAdmin, async (req, res, next) => {
     try {
-        const newPrestation = await Prestation.create(req.body);
+        const newPrestation = await Prestation.create({ ...req.body, creator: req.payload._id });
         res.status(201).json(newPrestation);
     } catch (error) {
         next(error);
     }
 });
 
+// CREATE a new prestation for a specific user
+// router.post("/:userId", async (req, res, next) => {
+//     try {
+//         const userId = req.params.userId;
+//         // You can use the userId to associate the prestation with the user
+//         const newPrestation = await Prestation.create({
+//             ...req.body,
+//             userId: userId,
+//         });
+//         res.status(201).json(newPrestation);
+//     } catch (error) {
+//         next(error);
+//     }
+// });
+
 // UPDATE a prestation
 //localhost:5005/api/prestations/64e62446078d1d08037b04cd ( we have to add the ID after )
-http: router.put("/:prestationId", async (req, res, next) => {
+router.put("/:prestationId", isAuthenticated, isAdmin, async (req, res, next) => {
     try {
-        const updatedPrestation = await Prestation.findByIdAndUpdate(req.params.prestationId, req.body, { new: true });
+        const updatedPrestation = await Prestation.findOneAndUpdate(
+            { _id: req.params.prestationId, creator: req.payload._id },
+            req.body,
+            // cela permets detre sur que nous ne pouvons pas changer la prestation de quelquun d'autre.
+            /*  try {
+        const updatedPrestation = await Prestation.findOneAndUpdate(
+            { _id: req.params.prestationId, creator: req.payload._id },
+            req.body,
+            // cela permets detre sur que nous ne pouvons pas changer la prestation de quelquun d'autre.
+            { new: true }
+        );
+        res.json(updatedPrestation);*/
+            { new: true }
+        );
         res.json(updatedPrestation);
     } catch (error) {
         next(error);

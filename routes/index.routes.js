@@ -25,18 +25,28 @@ router.use("/auth", require("./auth.routes"));
 router.use("/team-images", require("./auth.routes"));
 
 // upload picture route pour mes user.
-router.post("/", uploader.single("picture"), async (req, res, next) => {
-    console.log(req.body);
-    console.log(req.file);
-    try {
-        const createdUser = await User.create({
-            // name: req.body.name,
-            picture: req.file.path,
-        });
-        res.json(createdUser);
-    } catch (error) {
-        next(error);
-    }
-});
+// router.post("/", uploader.single("picture"), async (req, res, next) => {
+//     console.log(req.body);
+//     console.log(req.file);
+//     try {
+//         const createdUser = await User.create({
+//             // name: req.body.name,
+//             email: req.body.email,
+//             password: req.body.password,
+//             picture: req.file.path,
+//             lastName: req.body.lastName,
+//             firstName: req.body.firstName,
+//             address: req.body.address,
+//             zipcode: req.body.zipcode,
+//             city: req.body.city,
+//             phone: req.body.phone,
+
+//             picture: req.file.path,
+//         });
+//         res.json(createdUser);
+//     } catch (error) {
+//         next(error);
+//     }
+// });
 
 module.exports = router;

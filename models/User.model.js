@@ -66,12 +66,12 @@ const userSchema = new Schema(
             default: "User",
         },
         // relation avec le user connected
-        prestation: [
-            {
-                type: Schema.Types.ObjectId,
-                ref: "Prestation",
-            },
-        ],
+        // prestation: [
+        //     {
+        //         type: Schema.Types.ObjectId,
+        //         ref: "Prestation",
+        //     },
+        // ],
         techno: [
             {
                 type: Schema.Types.ObjectId,

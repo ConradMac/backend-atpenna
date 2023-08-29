@@ -17,11 +17,15 @@ const prestationSchema = new Schema({
         min: 1,
         max: 500,
     },
-    slug: {
-        type: String,
-        unique: true,
-        lowercase: true,
-        trim: true,
+    // slug: {
+    //     type: String,
+    //     unique: true,
+    //     lowercase: true,
+    //     trim: true,
+    // },
+    creator: {
+        type: Schema.Types.ObjectId,
+        ref: "User",
     },
 });
 

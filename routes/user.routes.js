@@ -1,6 +1,8 @@
 const router = require("express").Router();
+const Prestation = require("../models/Prestation.models");
 const User = require("../models/User.model");
-// const { isAuthenticated } = require("../middlewares/authentication");
+
+const { isAuthenticated } = require("../middlewares/jwt.middleware");
 
 //afficlier techno a user team pr ke kan je clik/photo je sois rediriger sur page avec all user avec id techno & then click sur photo pour voir profil de la person que je souhaite.
 
@@ -35,10 +37,15 @@ router.get("/", async (req, res, next) => {
 });
 
 // GET one user
-router.get("/:userId", async (req, res, next) => {
+router.get("/:userId", isAuthenticated, async (req, res, next) => {
     try {
-        const user = await User.findById(req.params.userId).populate("prestation");
-        res.json(user);
+        const user = await User.findById(req.params.userId);
+
+        // cela permet de trouver toutes les presta que le user a créee.
+        const prestationOfUser = await Prestation.find({ creator: req.params.userId });
+
+        //
+        res.json({ user, prestation: prestationOfUser });
     } catch (error) {
         next(error);
     }
