@@ -22,7 +22,7 @@ router.use("/users", require("./user.routes"));
 router.use("/auth", require("./auth.routes"));
 
 // ajout pour photo
-router.use("/team-images", require("./auth.routes"));
+// router.use("/team-images", require("./auth.routes"));
 
 // upload picture route pour mes user.
 // router.post("/", uploader.single("picture"), async (req, res, next) => {
