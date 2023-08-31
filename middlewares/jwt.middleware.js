@@ -1,6 +1,8 @@
 const { expressjwt: jwt } = require("express-jwt");
 const User = require("../models/User.model");
 
+// ajouter isOwnerOrAdmin
+
 // Instantiate the JWT token validation middleware
 const isAuthenticated = jwt({
     secret: process.env.TOKEN_SECRET,
@@ -9,10 +11,10 @@ const isAuthenticated = jwt({
     getToken: getTokenFromHeaders,
 });
 
-async function isAdmin(req, res, next) {
+async function isAdminOrSuperAdmin(req, res, next) {
     try {
         const user = await User.findById(req.payload._id);
-        if (user.role === "Admin") {
+        if (user.role === "Admin" || user.role === "SuperAdmin") {
             req.user = user;
             next();
         } else {
@@ -22,6 +24,35 @@ async function isAdmin(req, res, next) {
         next(error);
     }
 }
+
+async function isOwnerOrAdmin(req, res, next) {
+    try {
+        const tokenUser = await User.findById(req.payload._id);
+        if (tokenUser.role === "Admin") {
+            req.user = tokenUser;
+            return next();
+        } else if (req.params.userId === req.payload._id) {
+            return next();
+        } else {
+            return res.status(401).json({ message: "Unauthorized to modify this profile." });
+        }
+    } catch (error) {
+        next(error);
+    }
+}
+
+// isOwnerOrAdmin = extraire l'utilisateur actuel à partir du token JWT en utilisant le payload puis check if  (tokenUser.role === "Admin"). si si oui, il autorise la requête en appelant next(). Sinon, je  vérifie si l'userId passé dans les paramètres de la requête
+
+// const checkRole =
+//     (...roles) =>
+//     (req, res, next) => {
+//         if (roles.includes(req.session.currentUser.role)) {
+//             next();
+//         }
+//         // else {
+//         //    res.render('auth/login-form', { errorMessage: 'MSG' })
+//         // }
+//     };
 
 // Function used to extract the JWT token from the request's 'Authorization' Headers
 function getTokenFromHeaders(req) {
@@ -40,5 +71,6 @@ function getTokenFromHeaders(req) {
 // Export the middleware so that we can use it to create protected routes
 module.exports = {
     isAuthenticated,
-    isAdmin,
+    isAdminOrSuperAdmin,
+    isOwnerOrAdmin,
 };

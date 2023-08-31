@@ -1,5 +1,5 @@
 const router = require("express").Router();
-const Techno = require("../models/techno.models");
+const Techno = require("./../models/Techno.models");
 const { isAuthenticated, isAdmin } = require("./../middlewares/jwt.middleware");
 const User = require("./../models/User.model");
 

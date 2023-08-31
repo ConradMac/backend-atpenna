@@ -62,7 +62,7 @@ const userSchema = new Schema(
         // utilisé pour les login logout :)
         role: {
             type: String,
-            enum: ["Admin", "User"],
+            enum: ["Admin", "User", "SuperAdmin"],
             default: "User",
         },
         // relation avec le user connected

@@ -1,6 +1,6 @@
 const router = require("express").Router();
-const Prestation = require("../models/Prestation.models");
-const User = require("../models/User.model");
+const Prestation = require("./../models/Prestation.models");
+const User = require("./../models/User.model");
 
 const { isAuthenticated } = require("../middlewares/jwt.middleware");
 
@@ -61,17 +61,15 @@ router.post("/", async (req, res, next) => {
     }
 });
 
-module.exports = router;
-
 // UPDATE a user
-router.put("/:userId", async (req, res, next) => {
-    try {
-        const updatedUser = await User.findByIdAndUpdate(req.params.userId, req.body, { new: true });
-        res.json(updatedUser);
-    } catch (error) {
-        next(error);
-    }
-});
+// router.put("/:userId", isAuthenticated, isOwnerOrAdmin, async (req, res, next) => {
+//     try {
+//         const updatedUser = await User.findByIdAndUpdate(req.params.userId, req.body, { new: true });
+//         res.json(updatedUser);
+//     } catch (error) {
+//         next(error);
+//     }
+// });
 
 // DELETE a user
 router.delete("/:userId", async (req, res, next) => {
