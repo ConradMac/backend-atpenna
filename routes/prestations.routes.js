@@ -54,20 +54,9 @@ router.post("/", isAuthenticated, async (req, res, next) => {
 //localhost:5005/api/prestations/64e62446078d1d08037b04cd ( we have to add the ID after )
 router.put("/:prestationId", isAuthenticated, isAdminOrSuperAdmin, async (req, res, next) => {
     try {
-        const updatedPrestation = await Prestation.findOneAndUpdate(
-            { _id: req.params.prestationId },
-            req.body,
-            // cela permets detre sur que nous ne pouvons pas changer la prestation de quelquun d'autre.
-            /*  try {
-        const updatedPrestation = await Prestation.findOneAndUpdate(
-            { _id: req.params.prestationId, creator: req.payload._id },
-            req.body,
-            // cela permets detre sur que nous ne pouvons pas changer la prestation de quelquun d'autre.
-            { new: true }
-        );
-        res.json(updatedPrestation);*/
-            { new: true }
-        );
+        const updatedPrestation = await Prestation.findOneAndUpdate({ _id: req.params.prestationId }, req.body, {
+            new: true,
+        });
         res.json(updatedPrestation);
     } catch (error) {
         next(error);

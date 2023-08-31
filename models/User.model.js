@@ -52,14 +52,8 @@ const userSchema = new Schema(
             type: String,
             default: "",
         },
-        // slug: {
-        //     type: String,
-        //     unique: true,
-        //     lowercase: true,
-        //     trim: true,
-        // },
 
-        // utilisé pour les login logout :)
+        // utilisé pour les login logout
         role: {
             type: String,
             enum: ["Admin", "User", "SuperAdmin"],
