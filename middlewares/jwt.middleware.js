@@ -1,5 +1,5 @@
 const { expressjwt: jwt } = require("express-jwt");
-const User = require("../models/User.model");
+const User = require("./../models/User.model");
 
 // ajouter isOwnerOrAdmin
 

@@ -1,7 +1,7 @@
 const { isAuthenticated, isAdminOrSuperAdmin } = require("./../middlewares/jwt.middleware");
 
 const router = require("express").Router();
-const Prestation = require("../models/Prestation.models");
+const Prestation = require("./../models/Prestation.models");
 
 // GET all prestations
 //localhost:5005/api/prestations/
